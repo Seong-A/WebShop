@@ -1,0 +1,55 @@
+@charset "utf-8";
+
+body {
+    margin: 0;
+}
+
+.header {
+    background-color: #f0f0f0;
+    border-bottom: 2px solid #ccc;
+}
+
+.outer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px; 
+}
+
+.list {
+    background: url("/images/icon.png") no-repeat left top;
+    width: 30px;
+    height: 30px;
+    display: block;
+}
+
+.logo {
+    background: url("/images/logo.png") no-repeat center center;
+    width: 150px; 
+    height: 50px; 
+    display: block;
+}
+
+.header-menu {
+    display: flex;
+}
+
+.account {
+    background: url("/images/account.png") no-repeat right top;
+    width: 50px;
+    height: 50px;
+    display: block;
+}
+.cart {
+    background: url("/images/cart.png") no-repeat right top;
+    width: 50px;
+    height: 50px;
+    margin-top: 5px;
+    display: block;
+    display: flex;
+    align-items: center;
+    padding: 0 10px; 
+}
+
+/* .badge {
+} */
