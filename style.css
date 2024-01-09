@@ -5,8 +5,8 @@ body {
 }
 
 .header {
-    background-color: #f0f0f0;
-    border-bottom: 2px solid #ccc;
+    background-color: #FFBE98;
+    border-bottom: 2px solid #ffffff;
 }
 
 .outer {
@@ -24,10 +24,14 @@ body {
 }
 
 .logo {
-    background: url("/images/logo.png") no-repeat center center;
+    background: no-repeat center center;
     width: 150px; 
     height: 50px; 
     display: block;
+    font-size: 45px;
+    color: #ffffff;
+    font-weight: bold;
+    font-family: 'Lobster', sans-serif;
 }
 
 .header-menu {
@@ -51,5 +55,70 @@ body {
     padding: 0 10px; 
 }
 
-/* .badge {
-} */
+.adcard {
+    display: flex;
+}
+
+.adcard div {
+    width: 100%; 
+    box-sizing: border-box; 
+    border: 1px solid #ccc; 
+}
+
+.adcard video {
+    width: 100%; 
+    height: auto; 
+}
+
+.explain {
+    font-family: 'Lobster', sans-serif;
+    font-size: 30px;
+    text-align: center; 
+    display: block; 
+    margin: 50px auto; 
+}
+
+.store_ex {
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    border: 2px solid #FFBE98; 
+    margin-bottom: 40px;
+}
+
+.store_ex img {
+    max-width: 50%; 
+    border-radius: 10px; 
+}
+
+.store_ex .text {
+    max-width: 60%; 
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-weight: bold;
+    font-size: 20px;
+    color: #FFBE98;
+    text-align: center; 
+}
+
+.text-ing {
+    font-size: 20px;
+    margin-left: 30px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-weight: bold;
+}
+.pop-ups {
+    margin: 50px auto; 
+    display: flex;
+    justify-content: space-between;
+    padding: 20px;
+
+}
+
+.pop-up-card {
+    width: 100%;
+    border: 1px solid #ccc;
+    padding: 20px;
+    box-sizing: border-box;
+    margin-right: 10px; 
+    border-radius: 10px;
+}
