@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PoPoP</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lobster&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/style.css">
+    <script>
+        function toggleSidebar() {
+            var sidebar = document.getElementById('sidebar');
+            var closeButton = document.querySelector('.sidebar .close-button');
+
+            sidebar.classList.toggle('show-sidebar');
+
+            setTimeout(function() {
+                closeButton.classList.toggle('show-close-button');
+            }, 200);
+        }
+
+        function closeSidebar() {
+            var sidebar = document.getElementById('sidebar');
+            var closeButton = document.querySelector('.sidebar .close-button');
+
+            sidebar.classList.remove('show-sidebar');
+            closeButton.classList.remove('show-close-button');
+        }
+    </script>
+</head>
+<body>
+    <div class="header">
+        <div class="outer">
+            <div class="list" onclick="toggleSidebar()"></div>
+            <a class="logo">PoPoP</a>
+        </div>
+    </div>
+    <div id="sidebar" class="sidebar">
+        <span class="close-button" role="button" onclick="closeSidebar()"></span>
+        <ul>
+            <li><a href="popup_store.html" class="menu-item">팝업스토어</a></li>
+            <li><a href="space_lease.html" class="menu-item">공간 대관</a></li>
+            <li><a href="events.html" class="menu-item">전국 행사</a></li>
+        </ul>
+    </div>
+    <div class="join-container">
+        <h2 class="join-title">Join</h2>
+        <ul class="form-join">
+            <br><br>
+            <div class="form-field">
+                <label for="id" class="field-label">아이디</label>
+            <br><br>
+            <li class="form-field">
+                <input id="id" class="id" name="id" fw-fliter="isFill" fw-label="아이디" fw-msg class="inputTypeText" placeholder="ID" value type="text">
+            </li>
+            <div class="form-field">
+                <label for="password" class="field-label">비밀번호</label>
+            <br><br>
+            <li class="form-field">
+                <input id="password" class="password" name="password" fw-filter="isFill&isMin[4]&isMax[16]" fw-label="패스워드" fw-msg autocomplete="off" value type="password" placeholder="PASSWORD">
+            </li>
+            <div class="form-field">
+                <label for="name" class="field-label">이름</label>
+            <br><br>
+            <li class="form-field">
+                <input id="name" class="name" name="name" fw-filter="isFill&isMax[30]" fw-label="이름" fw-msg class="name" placeholder="NAME" maxlength="30" value type="text">
+            </li>
+            <div class="form-field">
+            <label for="phone" class="field-label">전화번호</label>
+            <br><br>
+            <span class="select-field">
+                <select id="phone" class="phone" name="phone" fw-filter="isNumber&isFill" fw-label="휴대전화" fw-alone="N" fw-msg="">
+                    <option value="010">010</option>
+                    <option value="011">011</option>
+                    <option value="016">016</option>
+                    <option value="017">017</option>
+                    <option value="018">018</option>
+                    <option value="019">019</option>
+                </select>
+            </span>
+            &nbsp; - &nbsp;<input id="phone" class="phone" name="phone" maxlength="4" fw-filter="isNumber&isFill" fw-label="휴대전화" fw-alone="N" fw-msg="" placeholder="" value="" type="text">
+            &nbsp; - &nbsp;<input id="phone" class="phone" name="phone" maxlength="4" fw-filter="isNumber&isFill" fw-label="휴대전화" fw-alone="N" fw-msg="" placeholder="" value="" type="text">					   
+            </div>
+            <button type="submit" class="join">회원가입</button>
+        </ul>
+    </div>
+</body>
+</html>

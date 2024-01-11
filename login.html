@@ -9,11 +9,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Lobster&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/style.css">
     <script>
-        function restartVideo() {
-            document.getElementById('vid').currentTime = 0;
-            document.getElementById('vid').play();
-        }
-
         function toggleSidebar() {
             var sidebar = document.getElementById('sidebar');
             var closeButton = document.querySelector('.sidebar .close-button');
@@ -39,10 +34,6 @@
         <div class="outer">
             <div class="list" onclick="toggleSidebar()"></div>
             <a class="logo">PoPoP</a>
-            <div class="header-menu">
-                <a href="login.html" class="account"></a>
-                <a href="/order/basket.html" class="cart"></a>
-            </div>
         </div>
     </div>
     <div id="sidebar" class="sidebar">
@@ -53,32 +44,18 @@
             <li><a href="events.html" class="menu-item">전국 행사</a></li>
         </ul>
     </div>
-    <div class="body">
-        <div class="ad">
-            <div class="adcard">
-                <div>
-                    <video id="vid" autoplay muted onended="restartVideo()">
-                        <source src="videos/video1.mp4" type="video/mp4">
-                    </video>
-                </div>
-            </div>
-        </div>
-        <div>
-            <a class="explain">PoPoP provides all the information about pop-ups. </a>
-        </div>
-        <div class="store_ex">
-            <img src="https://pds.joongang.co.kr/news/component/htmlphoto_mmdata/202310/24/6ca97ba6-37ad-4a03-91c1-36218ecac9e3.jpg/_ir_/resize/1280" alt="Popup_Store">
-            <div class="text">브랜드의 본질을 불어넣기 위해 상품판매, 전시, <br> 체험 마케팅 등의 요소를 접목한 것이 팝업스토어이다.</div>
-        </div>        
-        <div>
-            <a class="text-ing">진행중인 팝업스토어</a>
-            <div class="pop-ups">
-                <div class="pop-up-card">Card 1 Content</div>
-                <div class="pop-up-card">Card 2 Content</div>
-                <div class="pop-up-card">Card 3 Content</div>
-                <div class="pop-up-card">Card 4 Content</div>
-            </div>
-        </div>
+    <div class="login-container">
+        <h2 class="login-title">Login</h2>
+        <ul class="form-login">
+            <li class="form-field">
+                <input id="id" class="id" name="id" fw-fliter="isFill" fw-label="아이디" fw-msg class="inputTypeText" placeholder="ID" value type="text">
+            </li>
+            <li class="form-field">
+                <input id="password" class="password" name="password" fw-filter="isFill&isMin[4]&isMax[16]" fw-label="패스워드" fw-msg autocomplete="off" value type="password" placeholder="PASSWORD">
+            </li>
+            <button type="submit" class="login">로그인</button>
+            <button type="join" class="join" onclick="location.href='join.html'">회원가입</button>
+        </ul>
     </div>
 </body>
 </html>

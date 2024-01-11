@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PoPoP</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lobster&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/style.css">
+    <script>
+        function toggleSidebar() {
+            var sidebar = document.getElementById('sidebar');
+            var closeButton = document.querySelector('.sidebar .close-button');
+
+            sidebar.classList.toggle('show-sidebar');
+
+            setTimeout(function() {
+                closeButton.classList.toggle('show-close-button');
+            }, 200);
+        }
+
+        function closeSidebar() {
+            var sidebar = document.getElementById('sidebar');
+            var closeButton = document.querySelector('.sidebar .close-button');
+
+            sidebar.classList.remove('show-sidebar');
+            closeButton.classList.remove('show-close-button');
+        }
+    </script>
+</head>
+<body>
+    <div class="header">
+        <div class="outer">
+            <div class="list" onclick="toggleSidebar()"></div>
+            <a class="logo">PoPoP</a>
+            <div class="header-menu">
+                <a href="login.html" class="account"></a>
+                <a href="/order/basket.html" class="cart"></a>
+            </div>
+        </div>
+    </div>
+    <div id="sidebar" class="sidebar">
+        <span class="close-button" role="button" onclick="closeSidebar()"></span>
+        <ul>
+            <li><a href="#" class="menu-item">팝업스토어</a></li>
+            <li><a href="spaces/space_lease.html" class="menu-item">공간 대관</a></li>
+            <li><a href="events/events.html" class="menu-item">전국 행사</a></li>
+        </ul>
+    </div>
+    <div>
+        <div class="card-containers">
+            <div class="popup-card">
+                <div class="ppp">
+                    <div class="sign-card">
+                        <div class="sign-popup">
+                            <p>팝업 스토어</p>
+                        </div>
+                    </div>
+                    <button class="btn-like">🤍</button>
+                    <img src="https://www.valuevenue.co.kr/upload_files/schedule/202312/t600_20231222190024_22721.jpg" class="popup_img">
+                </div>
+                <a class="card-surface">
+                    <div class="card-inner">
+                        <div class="txt_wrap">
+                            <p class="txt_card_title">제목</p>
+                            <p class="txt_card_location">위치</p>
+                            <hr class="card-line">
+                        </div>
+                        <div class="txt_event">팝업시간
+                            <span class="term">24,01.15 ~ 01.21</span>
+                        </div>
+
+                    </div>
+
+                </a>
+            </div>
+            <div class="popup-card">
+                <div class="ppp">
+                    <div class="sign-card">
+                        <div class="sign-popup">
+                            <p>팝업 스토어</p>
+                        </div>
+                    </div>
+                    <button class="btn-like">🤍</button>
+                    <img src="https://www.valuevenue.co.kr/upload_files/schedule/202312/t600_20231222190024_22721.jpg" class="popup_img">
+                </div>
+                <a class="card-surface">
+                    <div class="card-inner">
+                        <div class="txt_wrap">
+                            <p class="txt_card_title">제목</p>
+                            <p class="txt_card_location">위치</p>
+                            <hr class="card-line">
+                        </div>
+                        <div class="txt_event">팝업시간
+                            <span class="term">24,01.15 ~ 01.21</span>
+                        </div>
+
+                    </div>
+
+                </a>
+            </div>
+            <div class="popup-card">
+                <div class="ppp">
+                    <div class="sign-card">
+                        <div class="sign-popup">
+                            <p>팝업 스토어</p>
+                        </div>
+                    </div>
+                    <button class="btn-like">🤍</button>
+                    <img src="https://www.valuevenue.co.kr/upload_files/schedule/202312/t600_20231222190024_22721.jpg" class="popup_img">
+                </div>
+                <a class="card-surface">
+                    <div class="card-inner">
+                        <div class="txt_wrap">
+                            <p class="txt_card_title">제목</p>
+                            <p class="txt_card_location">위치</p>
+                            <hr class="card-line">
+                        </div>
+                        <div class="txt_event">팝업시간
+                            <span class="term">24,01.15 ~ 01.21</span>
+                        </div>
+
+                    </div>
+
+                </a>
+            </div>
+            <div class="popup-card">
+                <div class="ppp">
+                    <div class="sign-card">
+                        <div class="sign-popup">
+                            <p>팝업 스토어</p>
+                        </div>
+                    </div>
+                    <button class="btn-like">🤍</button>
+                    <img src="https://www.valuevenue.co.kr/upload_files/schedule/202312/t600_20231222190024_22721.jpg" class="popup_img">
+                </div>
+                <a class="card-surface">
+                    <div class="card-inner">
+                        <div class="txt_wrap">
+                            <p class="txt_card_title">제목</p>
+                            <p class="txt_card_location">위치</p>
+                            <hr class="card-line">
+                        </div>
+                        <div class="txt_event">팝업시간
+                            <span class="term">24,01.15 ~ 01.21</span>
+                        </div>
+
+                    </div>
+
+                </a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
