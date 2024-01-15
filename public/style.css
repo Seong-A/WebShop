@@ -109,16 +109,6 @@ a {
     height: 50px;
     display: block;
 }
-.cart {
-    background: url("/images/cart.png") no-repeat right top;
-    width: 50px;
-    height: 50px;
-    margin-top: 5px;
-    display: block;
-    display: flex;
-    align-items: center;
-    padding: 0 10px; 
-}
 
 .adcard {
     display: flex;
@@ -333,7 +323,7 @@ a {
     margin-left: 6px;
 }
 
-.login-title, .join-title {
+.login-title, .join-title, .mypage-title {
     margin-top: 30px;
     margin-left: 40px;
     font-size: 22px;
@@ -396,7 +386,7 @@ a {
     height: auto;
 }
 
-.login {
+.login, .logout{
     background-color: transparent;
     border: none;
     border: 1px solid #000000;

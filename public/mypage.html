@@ -27,6 +27,28 @@
             sidebar.classList.remove('show-sidebar');
             closeButton.classList.remove('show-close-button');
         }
+
+        async function loadUserInfo() {
+            try {
+                const response = await fetch('/get-user-info');
+                const result = await response.json();
+
+                if (result.username) {
+                    const greetingElement = document.getElementById('greeting');
+                    greetingElement.innerHTML = `안녕하세요, ${result.username}님!`;
+                } else {
+                    console.error('사용자 정보가 없습니다.');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        }
+
+        window.onload = loadUserInfo;
+
+        function logoutUser() {
+            window.location.href = '/login.html';
+        }
     </script>
 </head>
 <body>
@@ -44,17 +66,14 @@
             <li><a href="events.html" class="menu-item">전국 행사</a></li>
         </ul>
     </div>
-    <div class="login-container">
-        <h2 class="login-title">Login</h2>
-        <ul class="form-login">
-            <li class="form-field">
-                <input id="id" class="id" name="id" fw-fliter="isFill" fw-label="아이디" fw-msg class="inputTypeText" placeholder="ID" value type="text">
+    <div class="mypage-container">
+        <h2 class="mypage-title">MyPage</h2>
+        <ul class="mypage-form">
+            <li class="form-field" id="greeting">
+                <p>안녕하세요, [사용자 이름]님!</p>
+                <p>여기에 사용자 정보를 표시할 수 있습니다.</p>
             </li>
-            <li class="form-field">
-                <input id="password" class="password" name="password" fw-filter="isFill&isMin[4]&isMax[16]" fw-label="패스워드" fw-msg autocomplete="off" value type="password" placeholder="PASSWORD">
-            </li>
-            <button type="submit" class="login">로그인</button>
-            <button type="join" class="join" onclick="location.href='join.html'">회원가입</button>
+        <button type="button" class="logout" onclick="logoutUser()">로그아웃</button>
         </ul>
     </div>
 </body>

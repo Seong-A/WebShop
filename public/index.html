@@ -32,6 +32,36 @@
             sidebar.classList.remove('show-sidebar');
             closeButton.classList.remove('show-close-button');
         }
+
+        function checkIfUserIsLoggedIn() {
+            return;
+        }
+        
+        async function checkLoginAndRedirect() {
+            // 서버에서 로그인 상태를 확인하려면 fetch를 사용합니다.
+            try {
+                const response = await fetch('/check-login');
+                const data = await response.json();
+
+                if (data.isLoggedIn) {
+                    // 로그인되면 세션 값을 설정하고 리디렉션합니다.
+                    await fetch('/set-session', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({ isLoggedIn: true, userId: data.userId }),
+                    });
+
+                    window.location.href = '/mypage.html';
+                } else {
+                    window.location.href = '/login.html';
+                }
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        }
+
     </script>
 </head>
 <body>
@@ -40,8 +70,7 @@
             <div class="list" onclick="toggleSidebar()"></div>
             <a class="logo">PoPoP</a>
             <div class="header-menu">
-                <a href="login.html" class="account"></a>
-                <a href="/order/basket.html" class="cart"></a>
+                <a class="account" href="#" onclick="checkLoginAndRedirect()"></a>
             </div>
         </div>
     </div>
