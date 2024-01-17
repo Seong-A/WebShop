@@ -330,12 +330,18 @@ a {
     font-family:'Times New Roman', Times, serif
 }
 
-.form-field {
+.write-title {
+    margin-top: 30px;
+    margin-left: 40px;
+    font-size: 22px;
+}
+
+.form-field, .form-write {
     margin-bottom: 30px;
     position: relative;
 }
 
-.id {
+.id, .title{
     background-color: transparent;
     border: none;
     border-bottom: 1px solid #000;
@@ -358,7 +364,7 @@ a {
     width: 100%;
 }
 
-.password {
+.password, .location {
     background-color: transparent;
     border: none;
     border-bottom: 1px solid #000;
@@ -372,7 +378,7 @@ a {
     height: auto;
 }
 
-.name {
+.name , .date, .category, .detail{
     background-color: transparent;
     border: none;
     border-bottom: 1px solid #000;
@@ -386,7 +392,7 @@ a {
     height: auto;
 }
 
-.login, .logout{
+.login, .logout, .submit{
     background-color: transparent;
     border: none;
     border: 1px solid #000000;

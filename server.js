@@ -1,6 +1,8 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const session = require('express-session');
+const multer = require('multer');
+const path = require('path');
 const mysqlModule = require('./mysql');
 const app = express();
 const port = 5500;
@@ -96,6 +98,62 @@ app.get('/get-user-info', (req, res) => {
     }
 });
 
+app.get('/check-master', (req, res) => {
+    const masterId = 'master';
+
+    if (req.session.isLoggedIn && req.session.userId === masterId) {
+        res.json({ isMaster: true });
+    } else {
+        res.json({ isMaster: false });
+    }
+});
+
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, 'public/uploads');
+    },
+    filename: function (req, file, cb) {
+        const ext = path.extname(file.originalname);
+        cb(null, 'picture-' + Date.now() + ext);
+    }
+});
+
+const upload = multer({ storage: storage });
+
+app.post('/submit-popup', upload.single('picture'), (req, res) => {
+    const title = req.body.title;
+    const location = req.body.location;
+    const date = req.body.date;
+    const category = req.body.category;
+    const detail = req.body.detail;
+    const picturePath = req.file ? req.file.path : null;
+
+    const insertQuery = 'INSERT INTO popup_store (title, location, date, category, detail, picture_path) VALUES (?, ?, ?, ?, ?, ?)';
+    const insertValues = [title, location, date, category, detail, picturePath];
+
+    connection.query(insertQuery, insertValues, (insertError, insertResults, insertFields) => {
+        if (insertError) {
+            console.error('게시물 등록 오류:', insertError);
+            res.status(500).json({ success: false, message: '게시물 등록 실패' });
+        } else {
+            console.log('게시물 등록 성공');
+            res.status(200).json({ success: true, message: '게시물 등록 성공' });
+        }
+    });
+});
+
+app.get('/get-popup-data', (req, res) => {
+    const query = 'SELECT * FROM popup_store';
+
+    connection.query(query, (error, results, fields) => {
+        if (error) {
+            console.error('팝업 데이터 가져오기 오류:', error);
+            res.status(500).json({ success: false, message: '내부 서버 오류' });
+        } else {
+            res.status(200).json(results);
+        }
+    });
+});
 
 process.on('SIGINT', () => {
     connection.end();

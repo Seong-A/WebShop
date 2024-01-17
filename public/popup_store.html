@@ -27,6 +27,91 @@
             sidebar.classList.remove('show-sidebar');
             closeButton.classList.remove('show-close-button');
         }
+
+        function checkIfUserIsLoggedIn() {
+            return;
+        }
+        
+        async function checkLoginAndRedirect() {
+            // 서버에서 로그인 상태를 확인하려면 fetch를 사용합니다.
+            try {
+                const response = await fetch('/check-login');
+                const data = await response.json();
+
+                if (data.isLoggedIn) {
+                    // 로그인되면 세션 값을 설정하고 리디렉션합니다.
+                    await fetch('/set-session', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({ isLoggedIn: true, userId: data.userId }),
+                    });
+
+                    window.location.href = '/mypage.html';
+                } else {
+                    window.location.href = '/login.html';
+                }
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            fetch('/check-master')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.isMaster) {
+                        document.getElementById('writeButton').style.display = 'block';
+                    }
+                })
+                .catch(error => console.error('세션 확인 오류:', error));
+
+
+            fetch('/get-popup-data')
+                .then(response => response.json())
+                .then(data => {
+                    data.forEach(popup_store => {
+                        createPopupCard(popup_store);
+                    });
+                })
+                .catch(error => console.error('팝업 데이터 가져오기 오류:', error));
+        });
+
+        function redirectToPopupWrite() {
+            window.location.href = 'popup_write.html';
+        }
+
+        function createPopupCard(popup_store) {
+            const popupCard = document.createElement('div');
+            popupCard.className = 'popup-card';
+
+            popupCard.innerHTML = `
+                <div class="ppp">
+                    <div class="sign-card">
+                        <div class="sign-popup">
+                            <p>팝업 스토어</p>
+                        </div>
+                    </div>
+                    <button class="btn-like">🤍</button>
+                    <img src="/uploads/${popup_store.picture_path}" class="popup_img">
+                </div>
+                <a class="card-surface">
+                    <div class="card-inner">
+                        <div class="txt_wrap">
+                            <p class="txt_card_title">${popup_store.title}</p>
+                            <p class="txt_card_location">${popup_store.location}</p>
+                            <hr class="card-line">
+                        </div>
+                        <div class="txt_event">팝업기간
+                            <span class="term">${popup_store.date}</span>
+                        </div>
+                    </div>
+                </a>
+            `;
+
+            document.querySelector('.card-containers').appendChild(popupCard);
+        }
     </script>
 </head>
 <body>
@@ -35,8 +120,7 @@
             <div class="list" onclick="toggleSidebar()"></div>
             <a class="logo">PoPoP</a>
             <div class="header-menu">
-                <a href="login.html" class="account"></a>
-                <a href="/order/basket.html" class="cart"></a>
+                <a class="account" href="#" onclick="checkLoginAndRedirect()"></a>
             </div>
         </div>
     </div>
@@ -44,112 +128,14 @@
         <span class="close-button" role="button" onclick="closeSidebar()"></span>
         <ul>
             <li><a href="#" class="menu-item">팝업스토어</a></li>
-            <li><a href="spaces/space_lease.html" class="menu-item">공간 대관</a></li>
-            <li><a href="events/events.html" class="menu-item">전국 행사</a></li>
+            <li><a href="space_lease.html" class="menu-item">공간 대관</a></li>
+            <li><a href="events.html" class="menu-item">전국 행사</a></li>
         </ul>
     </div>
     <div>
+        <button id="writeButton" onclick="redirectToPopupWrite()" style="display: none; margin: 10px; font-size: 15px; font-weight: bold; ">팝업스토어 등록하기</button>
         <div class="card-containers">
-            <div class="popup-card">
-                <div class="ppp">
-                    <div class="sign-card">
-                        <div class="sign-popup">
-                            <p>팝업 스토어</p>
-                        </div>
-                    </div>
-                    <button class="btn-like">🤍</button>
-                    <img src="https://www.valuevenue.co.kr/upload_files/schedule/202312/t600_20231222190024_22721.jpg" class="popup_img">
-                </div>
-                <a class="card-surface">
-                    <div class="card-inner">
-                        <div class="txt_wrap">
-                            <p class="txt_card_title">제목</p>
-                            <p class="txt_card_location">위치</p>
-                            <hr class="card-line">
-                        </div>
-                        <div class="txt_event">팝업시간
-                            <span class="term">24,01.15 ~ 01.21</span>
-                        </div>
-
-                    </div>
-
-                </a>
-            </div>
-            <div class="popup-card">
-                <div class="ppp">
-                    <div class="sign-card">
-                        <div class="sign-popup">
-                            <p>팝업 스토어</p>
-                        </div>
-                    </div>
-                    <button class="btn-like">🤍</button>
-                    <img src="https://www.valuevenue.co.kr/upload_files/schedule/202312/t600_20231222190024_22721.jpg" class="popup_img">
-                </div>
-                <a class="card-surface">
-                    <div class="card-inner">
-                        <div class="txt_wrap">
-                            <p class="txt_card_title">제목</p>
-                            <p class="txt_card_location">위치</p>
-                            <hr class="card-line">
-                        </div>
-                        <div class="txt_event">팝업시간
-                            <span class="term">24,01.15 ~ 01.21</span>
-                        </div>
-
-                    </div>
-
-                </a>
-            </div>
-            <div class="popup-card">
-                <div class="ppp">
-                    <div class="sign-card">
-                        <div class="sign-popup">
-                            <p>팝업 스토어</p>
-                        </div>
-                    </div>
-                    <button class="btn-like">🤍</button>
-                    <img src="https://www.valuevenue.co.kr/upload_files/schedule/202312/t600_20231222190024_22721.jpg" class="popup_img">
-                </div>
-                <a class="card-surface">
-                    <div class="card-inner">
-                        <div class="txt_wrap">
-                            <p class="txt_card_title">제목</p>
-                            <p class="txt_card_location">위치</p>
-                            <hr class="card-line">
-                        </div>
-                        <div class="txt_event">팝업시간
-                            <span class="term">24,01.15 ~ 01.21</span>
-                        </div>
-
-                    </div>
-
-                </a>
-            </div>
-            <div class="popup-card">
-                <div class="ppp">
-                    <div class="sign-card">
-                        <div class="sign-popup">
-                            <p>팝업 스토어</p>
-                        </div>
-                    </div>
-                    <button class="btn-like">🤍</button>
-                    <img src="https://www.valuevenue.co.kr/upload_files/schedule/202312/t600_20231222190024_22721.jpg" class="popup_img">
-                </div>
-                <a class="card-surface">
-                    <div class="card-inner">
-                        <div class="txt_wrap">
-                            <p class="txt_card_title">제목</p>
-                            <p class="txt_card_location">위치</p>
-                            <hr class="card-line">
-                        </div>
-                        <div class="txt_event">팝업시간
-                            <span class="term">24,01.15 ~ 01.21</span>
-                        </div>
-
-                    </div>
-
-                </a>
-            </div>
+             
         </div>
     </div>
 </body>
