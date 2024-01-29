@@ -44,11 +44,71 @@
             }
         }
 
-        window.onload = loadUserInfo;
+        // async function loadLikedPopups() {
+        //     try {
+        //         const response = await fetch('/get-liked-popups'); // 서버에서 사용자가 좋아요를 누른 팝업 목록을 가져옴
+        //         const likedPopups = await response.json();
 
-        function logoutUser() {
-            window.location.href = '/login.html';
+        //         const likedPopupsContainer = document.getElementById('likedPopups');
+        //         likedPopupsContainer.innerHTML = ''; 
+
+        //         if (likedPopups.length > 0) {
+        //             likedPopups.forEach(popup => {
+        //                 const popupElement = document.createElement('div');
+        //                 popupElement.classList.add('popup-item');
+        //                 popupElement.innerHTML = `
+        //                     <h3>${popup.title}</h3>
+        //                     <!-- 여기에 팝업의 기타 정보를 표시 -->
+        //                 `;
+        //                 likedPopupsContainer.appendChild(popupElement);
+        //             });
+        //         } else {
+        //             likedPopupsContainer.innerHTML = '좋아요를 누른 팝업이 없습니다.';
+        //         }
+        //     } catch (error) {
+        //         console.error('Error:', error);
+        //     }
+        // }
+
+        window.onload = () => {
+            loadUserInfo();
+            loadLikedPopups(); 
+        };
+
+        async function logoutUser() {
+            try {
+                const response = await fetch('/logout', {
+                    method: 'POST',
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    window.location.href = '/login.html';
+                } else {
+                    console.error('Logout failed');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+            }
         }
+
+        async function loadUserInfo() {
+            try {
+                const response = await fetch('/get-user-info');
+                const result = await response.json();
+
+                if (result.username) {
+                    const greetingTextElement = document.getElementById('greetingText');
+                    greetingTextElement.innerHTML = `안녕하세요, ${result.username}님!`;
+                } else {
+                    console.error('사용자 정보가 없습니다.');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        }
+
     </script>
 </head>
 <body>
@@ -70,10 +130,10 @@
         <h2 class="mypage-title">MyPage</h2>
         <ul class="mypage-form">
             <li class="form-field" id="greeting">
-                <p>안녕하세요, [사용자 이름]님!</p>
-                <p>여기에 사용자 정보를 표시할 수 있습니다.</p>
+                <p id="greetingText">안녕하세요, [사용자 이름]님!</p>
             </li>
-        <button type="button" class="logout" onclick="logoutUser()">로그아웃</button>
+            <div id="likedPopups" class="liked-popups-container"></div>
+            <button type="button" class="logout" onclick="logoutUser()">로그아웃</button>
         </ul>
     </div>
 </body>

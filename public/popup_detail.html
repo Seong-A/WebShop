@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PoPoP</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lobster&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/style.css">
+    <script>
+        function toggleSidebar() {
+            var sidebar = document.getElementById('sidebar');
+            var closeButton = document.querySelector('.sidebar .close-button');
+
+            sidebar.classList.toggle('show-sidebar');
+
+            setTimeout(function() {
+                closeButton.classList.toggle('show-close-button');
+            }, 200);
+        }
+
+        function closeSidebar() {
+            var sidebar = document.getElementById('sidebar');
+            var closeButton = document.querySelector('.sidebar .close-button');
+
+            sidebar.classList.remove('show-sidebar');
+            closeButton.classList.remove('show-close-button');
+        }
+
+        function checkIfUserIsLoggedIn() {
+            return;
+        }
+        
+        async function checkLoginAndRedirect() {
+            try {
+                const response = await fetch('/check-login');
+                const data = await response.json();
+
+                if (data.isLoggedIn) {
+                    // 로그인되면 세션 값을 설정하고 리디렉션합니다.
+                    await fetch('/set-session', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({ isLoggedIn: true, userId: data.userId }),
+                    });
+
+                    window.location.href = '/mypage.html';
+                } else {
+                    window.location.href = '/login.html';
+                }
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            fetchPopupDetail();
+        });
+
+        async function fetchPopupDetail() {
+            const popupId = getPopupIdFromURL();
+            if (popupId) {
+                try {
+                    const response = await fetch(`/get-popup-detail?id=${popupId}`);
+                    const popupData = await response.json();
+
+                    // 팝업이 좋아요된 상태인지 확인
+                    const isLiked = await checkIfPopupIsLiked(popupId);
+
+                    // 팝업 상세 정보를 표시하고 좋아요 버튼 상태를 설정합니다.
+                    ShowDetailPopup(popupData, isLiked);
+
+                } catch (error) {
+                    console.error('팝업 상세 정보 가져오기 오류:', error);
+                }
+            }
+        }
+
+
+        async function checkIfPopupIsLiked(popupId) {
+            try {
+                const response = await fetch(`/check-popup-like?id=${popupId}`);
+                const data = await response.json();
+                return data.isLiked;
+            } catch (error) {
+                console.error('팝업 좋아요 여부 확인 오류:', error);
+                return false;
+            }
+        }
+
+        // 좋아요 상태를 추적하는 변수
+        let isLiked = false;
+
+        async function handleLikeButtonClick() {
+            const btnLike = document.querySelector('.btn-like');
+            const popupId = getPopupIdFromURL();
+
+            // 좋아요 상태를 토글
+            isLiked = !isLiked;
+
+            // 서버에 좋아요 정보 전송
+            try {
+                const response = await fetch('/like-popup', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ popupId, isLiked }),
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    // 좋아요 상태에 따라 이모지를 변경
+                    btnLike.innerHTML = isLiked ? '❤️' : '🤍';
+                    console.log('좋아요 버튼 클릭!');
+                } else {
+                    console.error('좋아요 처리 실패');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+            }
+
+        }
+
+        function getPopupIdFromURL() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const popupId = urlParams.get('id');
+            return popupId;
+        }
+
+        function ShowDetailPopup(popup_store, isPopupLiked) {
+            const DetailPopup = document.createElement('div');
+            DetailPopup.dataset.popupStore = JSON.stringify(popup_store);
+
+            DetailPopup.innerHTML = `
+                <section class="picture">
+                    <div class="main-picture">
+                        <img src="/uploads/${popup_store.picture_path}" class="popup_img">
+                    </div>
+                </section>
+                <section class="detail-info">
+                    <p class="detail_title">${popup_store.title}</p>
+                    <span class="btn-like" onclick="handleLikeButtonClick()">${isLiked ? '❤️' : '🤍'}</span>
+                    <div class="detail_location">
+                        <img src="/images/location_img.png" class="location_img">
+                        <span class="address">${popup_store.location}</span>
+                    </div>
+                </section>
+                <hr class="detail-divline">
+                <section class="detail-info">
+                    <p class="deatil_space">공간소개</p>
+                    <table class="info">
+                        <tbody>
+                            <tr>
+                                <th class="detail_date"> • 팝업기간</th>
+                                <td>${popup_store.date}</td>
+                            </tr>
+                            <tr>
+                                <th class="datail_comment"> • 상세내용</th>
+                                <td>${popup_store.detail}</td>
+                            </tr>
+                            <tr>
+                                <th class="detail_category"> • 카테고리</th>
+                                <td>${popup_store.category}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </section>
+            `;
+            document.querySelector('.detail-containers').appendChild(DetailPopup);
+
+            const btnLike = document.querySelector('.btn-like');
+            btnLike.innerHTML = isLiked ? '❤️' : '🤍';
+        }
+
+        async function checkIfPopupIsLiked(popupId) {
+            try {
+                const response = await fetch(`/check-popup-like?id=${popupId}`);
+                const data = await response.json();
+                return data.isLiked ? true : false; 
+            } catch (error) {
+                console.error('팝업 좋아요 여부 확인 오류:', error);
+                return false;
+            }
+        }
+
+    </script>
+</head>
+<body>
+    <div class="header">
+        <div class="outer">
+            <div class="list" onclick="toggleSidebar()"></div>
+            <a class="logo" href="index.html">PoPoP</a>
+            <div class="header-menu">
+                <a class="account" href="#" onclick="checkLoginAndRedirect()"></a>
+            </div>
+        </div>
+    </div>
+    <div id="sidebar" class="sidebar">
+        <span class="close-button" role="button" onclick="closeSidebar()"></span>
+        <ul>
+            <li><a href="popup_store.html" class="menu-item">팝업스토어</a></li>
+            <li><a href="space_lease.html" class="menu-item">공간 대관</a></li>
+            <li><a href="events.html" class="menu-item">전국 행사</a></li>
+        </ul>
+    </div>
+    <div>
+        <div class="detail-containers"></div>
+    </div>
+</body>
+</html>

@@ -57,6 +57,10 @@
             }
         }
 
+        function redirectToPopupWrite() {
+            window.location.href = 'popup_write.html';
+        }
+
         document.addEventListener('DOMContentLoaded', function () {
             fetch('/check-master')
                 .then(response => response.json())
@@ -76,24 +80,22 @@
                     });
                 })
                 .catch(error => console.error('팝업 데이터 가져오기 오류:', error));
+                
         });
 
-        function redirectToPopupWrite() {
-            window.location.href = 'popup_write.html';
-        }
 
         function createPopupCard(popup_store) {
             const popupCard = document.createElement('div');
             popupCard.className = 'popup-card';
+            popupCard.dataset.popupStore = JSON.stringify(popup_store);
 
             popupCard.innerHTML = `
-                <div class="ppp">
+                <div class="ppp" onclick="redirectToPopupDetail('${popup_store.id}')">
                     <div class="sign-card">
                         <div class="sign-popup">
                             <p>팝업 스토어</p>
                         </div>
                     </div>
-                    <button class="btn-like">🤍</button>
                     <img src="/uploads/${popup_store.picture_path}" class="popup_img">
                 </div>
                 <a class="card-surface">
@@ -109,16 +111,24 @@
                     </div>
                 </a>
             `;
-
+            popupCard.addEventListener('click', function () {
+                redirectToPopupDetail(popup_store.id);
+            });
             document.querySelector('.card-containers').appendChild(popupCard);
         }
+
+        function redirectToPopupDetail(popupId) {
+            const popupDetailURL = `popup_detail.html?id=${popupId}`;
+            window.location.href = popupDetailURL;
+        }
+
     </script>
 </head>
 <body>
     <div class="header">
         <div class="outer">
             <div class="list" onclick="toggleSidebar()"></div>
-            <a class="logo">PoPoP</a>
+            <a class="logo" href="index.html">PoPoP</a>
             <div class="header-menu">
                 <a class="account" href="#" onclick="checkLoginAndRedirect()"></a>
             </div>
