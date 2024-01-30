@@ -376,7 +376,7 @@ a {
     height: auto;
 }
 
-.name , .date, .category, .detail{
+.name , .date, .category, .detail, .payment, .people, .size, .plan{
     background-color: transparent;
     border: none;
     border-bottom: 1px solid #000;
@@ -515,4 +515,8 @@ a {
 table {
     border-collapse: separate;
     border-spacing: 0 15px;
+}
+
+th {
+    padding-right: 15px; 
 }

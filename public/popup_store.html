@@ -67,6 +67,7 @@
                 .then(data => {
                     if (data.isMaster) {
                         document.getElementById('writeButton').style.display = 'block';
+                        
                     }
                 })
                 .catch(error => console.error('세션 확인 오류:', error));

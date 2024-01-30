@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PoPoP</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lobster&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/style.css">
+    <script>
+        function toggleSidebar() {
+            var sidebar = document.getElementById('sidebar');
+            var closeButton = document.querySelector('.sidebar .close-button');
+
+            sidebar.classList.toggle('show-sidebar');
+
+            setTimeout(function() {
+                closeButton.classList.toggle('show-close-button');
+            }, 200);
+        }
+
+        function closeSidebar() {
+            var sidebar = document.getElementById('sidebar');
+            var closeButton = document.querySelector('.sidebar .close-button');
+
+            sidebar.classList.remove('show-sidebar');
+            closeButton.classList.remove('show-close-button');
+        }
+
+        function checkIfUserIsLoggedIn() {
+            return;
+        }
+        
+        async function checkLoginAndRedirect() {
+            try {
+                const response = await fetch('/check-login');
+                const data = await response.json();
+
+                if (data.isLoggedIn) {
+                    // 로그인되면 세션 값을 설정하고 리디렉션합니다.
+                    await fetch('/set-session', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({ isLoggedIn: true, userId: data.userId }),
+                    });
+
+                    window.location.href = '/mypage.html';
+                } else {
+                    window.location.href = '/login.html';
+                }
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            fetchSpaceDetail();
+        });
+
+        async function fetchSpaceDetail() {
+            const spaceId = getSpaceIdFromURL();
+            if (spaceId) {
+                try {
+                    const response = await fetch(`/get-space-detail?id=${spaceId}`);
+                    const spaceData = await response.json();
+
+                    ShowDetailSpace(spaceData);
+
+                } catch (error) {
+                    console.error('팝업 상세 정보 가져오기 오류:', error);
+                }
+            }
+        }
+
+        function getSpaceIdFromURL() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const spaceId = urlParams.get('id');
+            return spaceId;
+        }
+
+        function ShowDetailSpace(lease_space) {
+            const DetailSpace = document.createElement('div');
+            DetailSpace.dataset.leaseSpace = JSON.stringify(lease_space);
+
+            DetailSpace.innerHTML = `
+                <section class="picture">
+                    <div class="main-picture">
+                        <img src="/uploads/${lease_space.picture_path}" class="popup_img">
+                    </div>
+                </section>
+                <section class="detail-info">
+                    <p class="detail_title">${lease_space.title}</p>
+                    <div class="detail_location">
+                        <img src="/images/location_img.png" class="location_img">
+                        <span class="address">${lease_space.location}</span>
+                    </div>
+                </section>
+                <hr class="detail-divline">
+                <section class="detail-info">
+                    <p class="deatil_space">공간소개</p>
+                    <table class="info">
+                        <tbody>
+                            <tr>
+                                <th class="detail_date"> • 운영기간 </th>
+                                <td>${lease_space.date}</td>
+                            </tr>
+                            <tr>
+                                <th class="datail_comment"> • 상세내용 </th>
+                                <td>${lease_space.detail}</td>
+                            </tr>
+                            <tr>
+                                <th class="detail_payment"> • 이용금액 </th>
+                                <td>${lease_space.payment}</td>
+                            </tr>
+                            <tr>
+                                <th class="detail_people"> • 수용인원 </th>
+                                <td>${lease_space.people}</td>
+                            </tr>
+                            <tr>
+                                <th class="detail_size"> • 공간크기 </th>
+                                <td>${lease_space.size}</td>
+                            </tr>
+                            <tr>
+                                <th class="detail_category"> • 카테고리 </th>
+                                <td>${lease_space.category}</td>
+                            </tr>
+
+                        </tbody>
+                    </table>
+                </section>
+            `;
+            document.querySelector('.detail-containers').appendChild(DetailSpace);
+        }
+
+    </script>
+</head>
+<body>
+    <div class="header">
+        <div class="outer">
+            <div class="list" onclick="toggleSidebar()"></div>
+            <a class="logo" href="index.html">PoPoP</a>
+            <div class="header-menu">
+                <a class="account" href="#" onclick="checkLoginAndRedirect()"></a>
+            </div>
+        </div>
+    </div>
+    <div id="sidebar" class="sidebar">
+        <span class="close-button" role="button" onclick="closeSidebar()"></span>
+        <ul>
+            <li><a href="popup_store.html" class="menu-item">팝업스토어</a></li>
+            <li><a href="space_lease.html" class="menu-item">공간 대관</a></li>
+            <li><a href="events.html" class="menu-item">전국 행사</a></li>
+        </ul>
+    </div>
+    <div>
+        <div class="detail-containers"></div>
+    </div>
+</body>
+</html>

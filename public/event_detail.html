@@ -33,7 +33,6 @@
         }
         
         async function checkLoginAndRedirect() {
-            // 서버에서 로그인 상태를 확인하려면 fetch를 사용합니다.
             try {
                 const response = await fetch('/check-login');
                 const data = await response.json();
@@ -57,71 +56,75 @@
             }
         }
 
-        function redirectToEventWrite() {
-            window.location.href = 'event_write.html';
-        }
-
         document.addEventListener('DOMContentLoaded', function () {
-            fetch('/check-master')
-                .then(response => response.json())
-                .then(data => {
-                    if (data.isMaster) {
-                        document.getElementById('writeButton').style.display = 'block';
-                    }
-                })
-                .catch(error => console.error('세션 확인 오류:', error));
-
-
-            fetch('/get-event-data')
-                .then(response => response.json())
-                .then(data => {
-                    data.forEach(event => {
-                        createEventCard(event);
-                    });
-                })
-                .catch(error => console.error('행사 데이터 가져오기 오류:', error));
-                
+            fetchEventDetail();
         });
 
+        async function fetchEventDetail() {
+            const eventId = getEventIdFromURL();
+            if (eventId) {
+                try {
+                    const response = await fetch(`/get-event-detail?id=${eventId}`);
+                    const eventData = await response.json();
 
-        function createEventCard(event) {
-            const eventCard = document.createElement('div');
-            eventCard.className = 'popup-card';
-            eventCard.dataset.event = JSON.stringify(event);
+                    ShowDetailEvent(eventData); 
 
-            eventCard.innerHTML = `
-                <div class="ppp" onclick="redirectToEvent('${event.id}')">
-                    <div class="sign-card">
-                        <div class="sign-popup">
-                            <p>전국행사</p>
-                        </div>
-                    </div>
-                    <img src="/uploads/${event.picture_path}" class="popup_img">
-                </div>
-                <a class="card-surface">
-                    <div class="card-inner">
-                        <div class="txt_wrap">
-                            <p class="txt_card_title">${event.title}</p>
-                            <p class="txt_card_location">${event.location}</p>
-                            <hr class="card-line">
-                        </div>
-                        <div class="txt_event">기간
-                            <span class="term">${event.date}</span>
-                        </div>
-                    </div>
-                </a>
-            `;
-            eventCard.addEventListener('click', function () {
-                redirectToEvent(event.id);
-            });
-
-            document.querySelector('.card-containers').appendChild(eventCard);
+                } catch (error) {
+                    console.error('행사 상세 정보 가져오기 오류:', error);
+                }
+            }
         }
 
+        function getEventIdFromURL() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const eventId = urlParams.get('id');
+            return eventId;
+        }
 
-        function redirectToEvent(eventId) {
-            const EventDetailURL = `event_detail.html?id=${eventId}`;
-            window.location.href = EventDetailURL;
+        function ShowDetailEvent(event) {
+            const DetailEvent = document.createElement('div');
+            DetailEvent.dataset.Event = JSON.stringify(event);
+
+            DetailEvent.innerHTML = `
+                <section class="picture">
+                    <div class="main-picture">
+                        <img src="/uploads/${event.picture_path}" class="popup_img">
+                    </div>
+                </section>
+                <section class="detail-info">
+                    <p class="detail_title">${event.title}</p>
+                    <div class="detail_location">
+                        <img src="/images/location_img.png" class="location_img">
+                        <span class="address">${event.location}</span>
+                    </div>
+                </section>
+                <hr class="detail-divline">
+                <section class="detail-info">
+                    <p class="deatil_space">공간소개</p>
+                    <table class="info">
+                        <tbody>
+                            <tr>
+                                <th class="detail_date"> • 운영기간 </th>
+                                <td>${event.date}</td>
+                            </tr>
+                            <tr>
+                                <th class="datail_comment"> • 상세내용 </th>
+                                <td>${event.detail}</td>
+                            </tr>
+                            <tr>
+                                <th class="detail_plan"> • 기획운영 </th>
+                                <td>${event.plan}</td>
+                            </tr>
+                            <tr>
+                                <th class="detail_category"> • 카테고리 </th>
+                                <td>${event.category}</td>
+                            </tr>
+
+                        </tbody>
+                    </table>
+                </section>
+            `;
+            document.querySelector('.detail-containers').appendChild(DetailEvent);
         }
 
     </script>
@@ -145,10 +148,7 @@
         </ul>
     </div>
     <div>
-        <button id="writeButton" onclick="redirectToEventWrite()" style="display: none; margin: 10px; font-size: 15px; font-weight: bold; ">전국행사 등록하기</button>
-        <div class="card-containers">
-             
-        </div>
+        <div class="detail-containers"></div>
     </div>
 </body>
 </html>

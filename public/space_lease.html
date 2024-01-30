@@ -57,6 +57,10 @@
             }
         }
 
+        function redirectToLeasePlaceWrite() {
+            window.location.href = 'lease_write.html';
+        }
+
         document.addEventListener('DOMContentLoaded', function () {
             fetch('/check-master')
                 .then(response => response.json())
@@ -68,8 +72,56 @@
                 .catch(error => console.error('세션 확인 오류:', error));
 
 
+            fetch('/get-space-data')
+                .then(response => response.json())
+                .then(data => {
+                    data.forEach(lease_space => {
+                        createLeaseSpaceCard(lease_space);
+                    });
+                })
+                .catch(error => console.error('팝업 데이터 가져오기 오류:', error));
+                
         });
 
+
+        function createLeaseSpaceCard(lease_space) {
+            const spaceCard = document.createElement('div');
+            spaceCard.className = 'popup-card';
+            spaceCard.dataset.leaseSpace = JSON.stringify(lease_space);
+
+            spaceCard.innerHTML = `
+                <div class="ppp" onclick="redirectToSpaceDetail('${lease_space.id}')">
+                    <div class="sign-card">
+                        <div class="sign-popup">
+                            <p>공간대여</p>
+                        </div>
+                    </div>
+                    <img src="/uploads/${lease_space.picture_path}" class="popup_img">
+                </div>
+                <a class="card-surface">
+                    <div class="card-inner">
+                        <div class="txt_wrap">
+                            <p class="txt_card_title">${lease_space.title}</p>
+                            <p class="txt_card_location">${lease_space.location}</p>
+                            <hr class="card-line">
+                        </div>
+                        <div class="txt_event">대여기간
+                            <span class="term">${lease_space.date}</span>
+                        </div>
+                    </div>
+                </a>
+            `;
+            spaceCard.addEventListener('click', function () {
+                redirectToSpaceDetail(lease_space.id);
+            });
+
+            document.querySelector('.card-containers').appendChild(spaceCard);
+        }
+
+        function redirectToSpaceDetail(spaceId) {
+            const SpaceDetailURL = `space_detail.html?id=${spaceId}`;
+            window.location.href = SpaceDetailURL;
+        }
 
     </script>
 </head>
@@ -87,12 +139,12 @@
         <span class="close-button" role="button" onclick="closeSidebar()"></span>
         <ul>
             <li><a href="popup_store.html" class="menu-item">팝업스토어</a></li>
-            <li><a href="#" class="menu-item">공간 대관</a></li>
+            <li><a href="#.html" class="menu-item">공간 대관</a></li>
             <li><a href="events.html" class="menu-item">전국 행사</a></li>
         </ul>
     </div>
     <div>
-        <button id="writeButton" onclick="redirectToPopupWrite()" style="display: none; margin: 10px; font-size: 15px; font-weight: bold; ">팝업스토어 등록하기</button>
+        <button id="writeButton" onclick="redirectToLeasePlaceWrite()" style="display: none; margin: 10px; font-size: 15px; font-weight: bold; ">공간대여 등록하기</button>
         <div class="card-containers">
              
         </div>

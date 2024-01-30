@@ -250,6 +250,125 @@ async function checkIfPopupIsLikedFromDatabase(userId, popupId) {
     }
 }
 
+app.post('/submit-space', upload.single('picture'), (req, res) => {
+    const title = req.body.title;
+    const location = req.body.location;
+    const date = req.body.date;
+    const category = req.body.category;
+    const detail = req.body.detail;
+    const payment = req.body.payment;
+    const people = req.body.people;
+    const size = req.body.size;
+    const picturePath = req.file ? req.file.path : null;
+
+    const insertQuery = 'INSERT INTO lease_space (title, location, date, category, detail, payment, people, size, picture_path) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)';
+    const insertValues = [title, location, date, category, detail, payment, people, size, picturePath];
+
+    connection.query(insertQuery, insertValues, (insertError, insertResults, insertFields) => {
+        if (insertError) {
+            console.error('게시물 등록 오류:', insertError);
+            res.status(500).json({ success: false, message: '게시물 등록 실패' });
+        } else {
+            console.log('게시물 등록 성공');
+            res.status(200).json({ success: true, message: '게시물 등록 성공' });
+        }
+    });
+});
+
+app.get('/get-space-data', (req, res) => {
+    const query = 'SELECT id, title, location, date, picture_path FROM lease_space';
+    
+    connection.query(query, (error, results, fields) => {
+        if (error) {
+            console.error('팝업 데이터 가져오기 오류:', error);
+            res.status(500).json({ success: false, message: '내부 서버 오류' });
+        } else {
+            res.status(200).json(results);
+        }
+    });
+});
+
+app.get('/get-space-detail', (req, res) => {
+    const spaceId = req.query.id; 
+    if (!spaceId) {
+        res.status(400).json({ success: false, message: '팝업 ID가 제공되지 않았습니다.' });
+        return;
+    }
+
+    const query = 'SELECT id, title, location, date, category, detail, payment, people, size, picture_path FROM lease_space WHERE id = ?';
+    
+    connection.query(query, [spaceId], (error, results, fields) => {
+        if (error) {
+            console.error('팝업 데이터 가져오기 오류:', error);
+            res.status(500).json({ success: false, message: '내부 서버 오류' });
+        } else {
+            if (results.length > 0) {
+                res.status(200).json(results[0]); 
+            } else {
+                res.status(404).json({ success: false, message: '해당 ID의 팝업을 찾을 수 없음' });
+            }
+        }
+    });
+});
+
+app.post('/submit-event', upload.single('picture'), (req, res) => {
+    const title = req.body.title;
+    const location = req.body.location;
+    const date = req.body.date;
+    const category = req.body.category;
+    const detail = req.body.detail;
+    const plan = req.body.plan;
+    const picturePath = req.file ? req.file.path : null;
+
+    const insertQuery = 'INSERT INTO event (title, location, date, category, detail, plan, picture_path) VALUES (?, ?, ?, ?, ?, ?, ?)';
+    const insertValues = [title, location, date, category, detail, plan, picturePath];
+
+    connection.query(insertQuery, insertValues, (insertError, insertResults, insertFields) => {
+        if (insertError) {
+            console.error('게시물 등록 오류:', insertError);
+            res.status(500).json({ success: false, message: '게시물 등록 실패' });
+        } else {
+            console.log('게시물 등록 성공');
+            res.status(200).json({ success: true, message: '게시물 등록 성공' });
+        }
+    });
+});
+
+app.get('/get-event-data', (req, res) => {
+    const query = 'SELECT id, title, location, date, picture_path FROM event';
+    
+    connection.query(query, (error, results, fields) => {
+        if (error) {
+            console.error('팝업 데이터 가져오기 오류:', error);
+            res.status(500).json({ success: false, message: '내부 서버 오류' });
+        } else {
+            res.status(200).json(results);
+        }
+    });
+});
+
+app.get('/get-event-detail', (req, res) => {
+    const eventId = req.query.id; 
+    if (!eventId) {
+        res.status(400).json({ success: false, message: '팝업 ID가 제공되지 않았습니다.' });
+        return;
+    }
+
+    const query = 'SELECT id, title, location, date, category, detail, plan, picture_path FROM event WHERE id = ?';
+    
+    connection.query(query, [eventId], (error, results, fields) => {
+        if (error) {
+            console.error('팝업 데이터 가져오기 오류:', error);
+            res.status(500).json({ success: false, message: '내부 서버 오류' });
+        } else {
+            if (results.length > 0) {
+                res.status(200).json(results[0]); 
+            } else {
+                res.status(404).json({ success: false, message: '해당 ID의 팝업을 찾을 수 없음' });
+            }
+        }
+    });
+});
 
 process.on('SIGINT', () => {
     connection.end();
