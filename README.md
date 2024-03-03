@@ -21,7 +21,7 @@
 ## Running Screen
 | Index             | Sidebar             |
 |-------------------------|-------------------------|
-|<img width="640" alt="image" src="https://github.com/Seong-A/WebShop/assets/83965377/348588cd-d9f7-4ab9-ae07-260889901b39">|<img width="640" alt="image" src="https://github.com/Seong-A/WebShop/assets/83965377/5c959f69-d777-493c-9ebe-c26df2f3c207">|
+|<img width="640" alt="image" src="https://github.com/Seong-A/WebShop/assets/83965377/60e10a4c-6768-4df0-a0d6-31768832c23a">|<img width="640" alt="image" src="https://github.com/Seong-A/WebShop/assets/83965377/5c959f69-d777-493c-9ebe-c26df2f3c207">|
 
 | Login             | Join             |
 |-------------------------|-------------------------|
@@ -29,12 +29,16 @@
 
 | Popup_store             | Popup_detail             |
 |-------------------------|-------------------------|
-|<img width="640" alt="image" src="https://github.com/Seong-A/WebShop/assets/83965377/1414612d-0460-4998-8016-29679efb56d4">|<img width="640" alt="image" src="https://github.com/Seong-A/WebShop/assets/83965377/ce4ff0f9-8ded-4ff0-9e5c-ca023cfd5e6a">|
+|<img width="640" alt="image" src="https://github.com/Seong-A/WebShop/assets/83965377/c687c46a-31b0-4973-a371-70d86aea6024">|<img width="640" alt="image" src="https://github.com/Seong-A/WebShop/assets/83965377/b64290bc-3648-4562-9410-a9b87c73fd03">|
 
 | Space_lease             | Space_detail             |
 |-------------------------|-------------------------|
-|<img width="640" alt="image" src="https://github.com/Seong-A/WebShop/assets/83965377/ad9f0ad8-4b83-4ce7-9349-27f47b7c0bfb">|<img width="640" alt="image" src="https://github.com/Seong-A/WebShop/assets/83965377/c6a3fc0e-b14c-4725-905e-4e401b13efa7">|
+|<img width="640" alt="image" src="https://github.com/Seong-A/WebShop/assets/83965377/090ca84a-cc12-4bb4-afac-a96b40119511">|<img width="640" alt="image" src="https://github.com/Seong-A/WebShop/assets/83965377/1c125a2f-708e-48dc-a330-bf6bf793547e">|
 
 | Events             | Event_detail             |
 |-------------------------|-------------------------|
-|<img width="640" alt="image" src="https://github.com/Seong-A/WebShop/assets/83965377/5c1dc5e9-0e0b-455a-b68c-d2e286d716ef">|<img width="640" alt="image" src="https://github.com/Seong-A/WebShop/assets/83965377/affc6268-e70e-41bf-ba98-bd84a06b448f">|
+|<img width="640" alt="image" src="https://github.com/Seong-A/WebShop/assets/83965377/6abcc584-addd-4dee-8f40-ab250cd4f71c">|<img width="640" alt="image" src="https://github.com/Seong-A/WebShop/assets/83965377/c831cad0-cd49-4463-baf7-6577bd74ac55">|
+
+
+
+
